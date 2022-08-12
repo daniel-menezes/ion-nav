@@ -11,9 +11,10 @@ import {
   IonBackButton,
   IonPage,
 } from "@ionic/react";
-import React from "react";
+import React, { useState } from "react";
 
 const NavComponent: React.FC = () => {
+  const [count, setCount] = useState(0);
   return (
     <IonPage>
       <IonNav
@@ -30,6 +31,13 @@ const NavComponent: React.FC = () => {
               </IonHeader>
               <IonContent id="pageOneContent">
                 <IonLabel>Page one content</IonLabel>
+                <div>
+                  <IonButton onClick={() => setCount(count + 1)}>
+                    Increase count
+                  </IonButton>
+                  <IonLabel>Count is {count}</IonLabel>
+                </div>
+
                 <IonNavLink
                   routerDirection="forward"
                   component={() => {
