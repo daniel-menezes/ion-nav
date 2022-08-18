@@ -11,10 +11,18 @@ import {
   IonBackButton,
   IonPage,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, {
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const PageOne: React.FC = () => {
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
+  const { count, setCount } = useCount();
+
   return (
     <>
       <IonHeader>
@@ -81,10 +89,42 @@ const PageOne: React.FC = () => {
   );
 };
 
+interface CountContextInterface {
+  count: number;
+  setCount: React.Dispatch<SetStateAction<number>>;
+}
+
+const CountContext = React.createContext<CountContextInterface>(
+  {} as CountContextInterface
+);
+
+export const CountProvider = ({ children }: { children: React.ReactNode }) => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <CountContext.Provider value={{ count: count, setCount: setCount }}>
+      {children}
+    </CountContext.Provider>
+  );
+};
+
+export function useCount() {
+  return useContext(CountContext);
+}
+
 const NavComponent: React.FC = () => {
+  const { count } = useCount();
+
+  useEffect(() => {
+    console.log("parent", count);
+  }, [count]);
+
+  const root = useCallback(() => <PageOne />, []);
+
   return (
     <IonPage>
-      <IonNav root={() => <PageOne />}></IonNav>
+      <IonNav root={root} />
+      {/* <PageOne></PageOne> */}
     </IonPage>
   );
 };

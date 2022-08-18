@@ -21,7 +21,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import NavComponent from "./components/NavComponent";
+import NavComponent, { CountProvider } from "./components/NavComponent";
 
 setupIonicReact();
 
@@ -31,7 +31,9 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <Route exact path="/home">
           {/* <Home /> */}
-          <NavComponent />
+          <CountProvider>
+            <NavComponent />
+          </CountProvider>
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />
